@@ -4,8 +4,10 @@
     "description": "A Fastify plugin to normalize the request and reply to Express request and response",
     "main": "index.js",
     "scripts": {
-        "test": "tap test/*.js --coverage --100",
-        "test:coverage": "tap test/*.js --cov --coverage-report=html"
+        "test": "tap test/*.js --coverage --100 --coverage-report=text-lcov",
+        "test:console": "tap test/*.js --coverage --100",
+        "test:coverage": "tap test/*.js --cov --coverage-report=html",
+        "test:coveralls": "tap test/*.js --cov --coverage-report=text-lcov | coveralls"
     },
     "repository": {
         "type": "git",
@@ -23,6 +25,7 @@
     ],
     "devDependencies": {
         "cookie-parser": "~1.4.3",
+        "coveralls": "^3.0.3",
         "fastify": "^1.1.0",
         "tap": "^12.1.0"
     },

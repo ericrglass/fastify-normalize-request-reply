@@ -5,3 +5,4 @@ coverage
 test
 .editorconfig
 .travis.yml
+.coveralls.yml
