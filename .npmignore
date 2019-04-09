@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+.nyc_output
+coverage
+test
+.editorconfig
+.travis.yml
