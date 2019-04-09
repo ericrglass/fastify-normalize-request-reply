@@ -1,6 +1,6 @@
 # fastify-normalize-request-reply
 
-[![Build Status](https://github.com/ericrglass/fastify-normalize-request-reply.svg?branch=master)](https://github.com/ericrglass/fastify-normalize-request-reply)
+[![Build Status](https://travis-ci.org/ericrglass/fastify-normalize-request-reply.svg?branch=master)](https://travis-ci.org/ericrglass/fastify-normalize-request-reply)
 [![Coverage Status](https://coveralls.io/repos/github/ericrglass/fastify-normalize-request-reply/badge.svg?branch=master)](https://coveralls.io/github/ericrglass/fastify-normalize-request-reply?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply/badge.svg)](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply)
 
