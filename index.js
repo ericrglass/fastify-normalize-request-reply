@@ -17,6 +17,6 @@ function normalizeRequestReplyPlugin(fastify, options, next) {
 }
 
 module.exports = fp(normalizeRequestReplyPlugin, {
-  fastify : '^1.x.x',
+  fastify : '^2.x.x',
   name : 'fastify-normalize-request-reply'
 })

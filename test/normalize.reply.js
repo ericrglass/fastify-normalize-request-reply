@@ -87,7 +87,7 @@ test('Reply normalized already', (t) => {
   t.tearDown(() => app.close())
 
   app.addHook('onRequest', (request, reply, next) => {
-    reply.fastifyNormalized = true
+    reply.res.fastifyNormalized = true
     next()
   })
 

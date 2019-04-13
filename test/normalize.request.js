@@ -70,7 +70,7 @@ test('Request normalized already', (t) => {
   t.tearDown(() => app.close())
 
   app.addHook('onRequest', (request, reply, next) => {
-    request.fastifyNormalized = true
+    request.raw.fastifyNormalized = true
     next()
   })
 
@@ -100,31 +100,31 @@ test('Request with functionality already', (t) => {
   t.tearDown(() => app.close())
 
   app.addHook('onRequest', (request, reply, next) => {
-    request.query = () => {
+    request.raw.query = () => {
       return '';
     }
-    request.protocol = () => {
+    request.raw.protocol = () => {
       return 'http';
     }
-    request.secure = () => {
+    request.raw.secure = () => {
       return false;
     }
-    request.ips = () => {
+    request.raw.ips = () => {
       return '127.0.0.1';
     }
-    request.subdomains = () => {
+    request.raw.subdomains = () => {
       return '127.0.0.1';
     }
-    request.path = () => {
+    request.raw.path = () => {
       return '/';
     }
-    request.fresh = () => {
+    request.raw.fresh = () => {
       return false;
     }
-    request.stale = () => {
+    request.raw.stale = () => {
       return true;
     }
-    request.xhr = () => {
+    request.raw.xhr = () => {
       return false;
     }
     next()

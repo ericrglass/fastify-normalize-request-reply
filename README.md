@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ericrglass/fastify-normalize-request-reply/badge.svg?branch=master)](https://coveralls.io/github/ericrglass/fastify-normalize-request-reply?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply/badge.svg)](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply)
 
-A plugin for [Fastify](https://www.fastify.io/) version 1.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware, like [swagger-stats](http://swaggerstats.io/), that was originally written for Express to be be utilized within Fastify.
+A plugin for [Fastify](https://www.fastify.io/) version 2.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware, like [swagger-stats](http://swaggerstats.io/), that was originally written for Express to be be utilized within Fastify.
 
 ## Install
 
@@ -18,7 +18,7 @@ Add it to you project with `register` and you are done!
 
 ```javascript
 // Register the plugin
-fastify.register(require("fastify-normalize-request-reply"));
+fastify.register(require('fastify-normalize-request-reply'));
 ```
 
 ## Options
@@ -37,7 +37,7 @@ This plugin allows specifying options that are normally available to the Express
 
 ## Todo
 
-+ Update to the next release version of Fastify 2.x
++ Update to the next release version of Fastify 2.x - `Complete`
 + Update to be compatible with the next release version of Express 5.x middleware
 
 ## License
