@@ -11,21 +11,6 @@ const fixtures = path.join(__dirname, 'fixtures')
 const cookie = require('cookie')
 const cookieParser = require('cookie-parser')
 
-function testEng(viewName, options) {
-  this.viewName = viewName;
-  this.opts = options || {};
-  this.render = function(options, fn) {
-    if (options && options.throwErr) {
-      throw new Error('Test engine throw error option is on')
-    }
-    fs.readFile(path.join(this.opts.root || '', this.viewName), 'utf8', function(err, str){
-      if (err) return fn(err);
-      str = str.replace('{{user.name}}', options.user.name);
-      fn(null, str);
-    });
-  }
-}
-
 test('Succesful get request with Reply normalized', (t) => {
   t.plan(29)
 
@@ -2094,31 +2079,23 @@ test('Reply vary(field) with an empty array', (t) => {
   })
 })
 
-test('Reply render(view, options, callback)', (t) => {
-  t.plan(8)
+test('res.render', (t) => {
+  t.plan(1)
 
   const app = Fastify()
   t.tearDown(() => app.close())
 
   app.register(plugin)
 
+  app.register(require('point-of-view'), {
+    engine: {
+      nunjucks: require('nunjucks'),
+    },
+    templates: path.join(__dirname, './', 'test/fixtures')
+  })
+
   app.use((req, res, next) => {
-    res.app.set('views', path.join(__dirname, 'fixtures'))
-    res.app.engine('html', testEng)
-    res.render('user.html', {
-      user: {
-        name: 'tobi'
-      }
-    }, function(err, str) {
-      t.error(err)
-      t.is(str, '<p>tobi</p>')
-      res.app.locals.user = { name: 'tobi' }
-      res.render('user.html', function(err, str) {
-        t.error(err)
-        t.is(str, '<p>tobi</p>')
-        res.render('user.html')
-      })
-    })
+    res.render('test.njk')
   })
 
   app.get('/', (req, reply) => {
@@ -2126,53 +2103,9 @@ test('Reply render(view, options, callback)', (t) => {
   })
 
   app.inject({
-    method: 'GET',
+    method: 'HEAD',
     url: '/'
   }, (err, response) => {
     t.error(err)
-    t.strictEqual(response.statusCode, 200)
-    t.strictEqual(response.headers['content-type'], 'text/html; charset=utf-8')
-    t.strictEqual(response.body, '<p>tobi</p>')
-  })
-})
-
-test('Reply render(view, options, callback) should next(err)', (t) => {
-  t.plan(5)
-
-  const app = Fastify()
-  t.tearDown(() => app.close())
-
-  app.register(plugin)
-
-  app.use((req, res, next) => {
-    req.next = (err) => {
-      t.is(err.message, 'Test engine throw error option is on')
-      next()
-    }
-    res.app.set('views', path.join(__dirname, 'fixtures'))
-    res.app.engine('html', testEng)
-    res.app.locals.user = { name: 'tobi' }
-    try {
-      res.render('bad.html', {
-        throwErr: true
-      })
-    } catch(err) {
-    }
-  })
-
-  app.get('/', (req, reply) => {
-    reply.send({ hello: 'world' })
-  })
-
-  app.inject({
-    method: 'GET',
-    url: '/'
-  }, (err, response) => {
-    t.error(err)
-    t.strictEqual(response.statusCode, 200)
-    t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-    t.deepEqual(JSON.parse(response.body), {
-      hello: 'world'
-    })
   })
 })

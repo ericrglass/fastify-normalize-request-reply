@@ -7,23 +7,8 @@ const fs = require('fs')
 const path = require('path')
 const plugin = require('../index')
 
-function testEng(viewName, options) {
-  this.viewName = viewName;
-  this.opts = options || {};
-  this.render = function(options, fn) {
-    if (options && options.throwErr) {
-      throw new Error('Test engine throw error option is on')
-    }
-    fs.readFile(path.join(this.opts.root || '', this.viewName), 'utf8', function(err, str){
-      if (err) return fn(err);
-      str = str.replace('{{user.name}}', options.user.name);
-      fn(null, str);
-    });
-  }
-}
-
 test('Should create the Express mock app with options', t => {
-  t.plan(23)
+  t.plan(15)
 
   const app = Fastify()
   t.tearDown(() => app.close())
@@ -66,17 +51,9 @@ test('Should create the Express mock app with options', t => {
     t.is(req.app.set('json spaces'), 0)
     res.app.set('view cache', false)
     t.is(res.app.enabled('view cache'), false)
-    res.app.set('views', path.join(__dirname, 'fixtures'))
-    t.ok(res.app.engine)
-    res.app.engine('html', testEng)
     t.ok(res.app.locals)
-    res.app.locals.user = { name: 'tobi' }
-    t.ok(res.app.render)
-    res.app.render('user.html', function(err, str) {
-      t.error(err)
-      t.is(str, '<p>tobi</p>')
-      next()
-    })
+    res.app.set('views', __dirname)
+    res.app.engine('html')
   })
 
   app.get('/', (req, reply) => {
@@ -87,62 +64,26 @@ test('Should create the Express mock app with options', t => {
     method: 'GET',
     url: '/'
   }, (err, response) => {
-    t.error(err)
-    t.strictEqual(response.statusCode, 200)
-    t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-    t.deepEqual(JSON.parse(response.body), {
-      hello: 'world'
-    })
   })
 })
 
-test('engine(ext, fn) and render(name, options, callback)', (t) => {
-  t.plan(10)
+test('app.render', (t) => {
+  t.plan(1)
 
   const app = Fastify()
   t.tearDown(() => app.close())
 
   app.register(plugin)
 
+  app.register(require('point-of-view'), {
+    engine: {
+      nunjucks: require('nunjucks'),
+    },
+    templates: path.join(__dirname, './', 'test/fixtures')
+  })
+
   app.use((req, res, next) => {
-    try {
-      res.app.engine('html')
-    } catch(err) {
-      t.is(err.message, 'callback function required')
-    }
-    res.app.set('views', path.join(__dirname, 'fixtures'))
-    res.app.engine('html', testEng)
-    try {
-      res.app.render('bad.html', {
-        throwErr: true
-      }, function(err, str) {
-        t.is(err.message, 'Test engine throw error option is on')
-      })
-    } catch(err) {
-    }
-    res.app.render('user.html', {
-      cache: true,
-      '_locals': {
-        user: {
-          name: 'tobi'
-        }
-      }
-    }, function(err, str) {
-      t.error(err)
-      t.is(str, '<p>tobi</p>')
-      res.app.render('user.html', {
-        cache: true,
-        '_locals': {
-          user: {
-            name: 'tobi'
-          }
-        }
-      }, function(err, str) {
-        t.error(err)
-        t.is(str, '<p>tobi</p>')
-        next()
-      })
-    })
+    res.app.render('test.njk')
   })
 
   app.get('/', (req, reply) => {
@@ -150,56 +91,9 @@ test('engine(ext, fn) and render(name, options, callback)', (t) => {
   })
 
   app.inject({
-    method: 'GET',
+    method: 'HEAD',
     url: '/'
   }, (err, response) => {
     t.error(err)
-    t.strictEqual(response.statusCode, 200)
-    t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-    t.deepEqual(JSON.parse(response.body), {
-      hello: 'world'
-    })
-  })
-})
-
-test('engine(dotext, fn) and render(name)', (t) => {
-  t.plan(6)
-
-  const app = Fastify()
-  t.tearDown(() => app.close())
-
-  app.register(plugin)
-
-  app.use((req, res, next) => {
-    res.app.set('views', path.join(__dirname, 'fixtures'))
-    res.app.engine('.html', testEng)
-    res.app.render('user.html', {
-      cache: true,
-      '_locals': {
-        user: {
-          name: 'tobi'
-        }
-      }
-    }, function(err, str) {
-      t.error(err)
-      t.is(str, '<p>tobi</p>')
-      next()
-    })
-  })
-
-  app.get('/', (req, reply) => {
-    reply.send({ hello: 'world' })
-  })
-
-  app.inject({
-    method: 'GET',
-    url: '/'
-  }, (err, response) => {
-    t.error(err)
-    t.strictEqual(response.statusCode, 200)
-    t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-    t.deepEqual(JSON.parse(response.body), {
-      hello: 'world'
-    })
   })
 })

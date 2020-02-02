@@ -4,7 +4,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/ericrglass/fastify-normalize-request-reply/badge.svg?branch=master)](https://coveralls.io/github/ericrglass/fastify-normalize-request-reply?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply/badge.svg)](https://snyk.io/test/github/ericrglass/fastify-normalize-request-reply)
 
-A plugin for [Fastify](https://www.fastify.io/) version 2.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware, like [swagger-stats](http://swaggerstats.io/), that was originally written for Express to be be utilized within Fastify.
+## NOTE
+
+This middleware does not support Express middleware that goes beyond simple request and response interaction. If the Express middleware has a UI with a template engine view; utilizes the Express routers; or starts its own instance of Express, then it is not supported.
+
+## Description
+
+A plugin for [Fastify](https://www.fastify.io/) version 2.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware with interaction with the request and response that was originally written for Express to be be utilized within Fastify.
 
 ## Install
 
@@ -34,11 +40,6 @@ This plugin allows specifying options that are normally available to the Express
 + `query parser`: Varied : Disable query parsing by setting the value to `false`, or set the query parser to use either `simple` or `extended` or a custom query string parsing `function`. (`extended` by default)
 + `subdomain offset`: Number : The number of dot-separated parts of the host to remove to access subdomain. (`2` by default)
 + `trust proxy`: Varied : Indicates the server is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client. To enable it, use the values described in the [trust proxy options table](https://expressjs.com/en/api.html#trust.proxy.options.table). (`false - disabled` by default)
-
-## Todo
-
-+ Update to the next release version of Fastify 2.x - `Complete`
-+ Update to be compatible with the next release version of Express 5.x middleware
 
 ## License
 

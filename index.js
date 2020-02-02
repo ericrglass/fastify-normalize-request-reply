@@ -72,6 +72,9 @@ function normalizeRequestReplyPlugin(fastify, options, next) {
   }
 
   fastify.addHook("onRequest", (req, reply, hookNext) => {
+    app.render = function render(name, options, callback) {
+        reply.view(name, options, callback);
+    }
     normalizeRequest(req, reply, app)
     normalizeReply(reply, req, app)
     hookNext()

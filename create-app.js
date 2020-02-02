@@ -14,14 +14,6 @@ const createApp = (opts) => {
   app.settings = {}
   app.locals = {}
 
-  function tryRender(view, options, callback) {
-    try {
-      view.render(options, callback);
-    } catch (err) {
-      callback(err);
-    }
-  }
-
   app.get = function get(setting) {
     return app.settings[setting]
   }
@@ -29,6 +21,10 @@ const createApp = (opts) => {
   app.set = function set(setting, val) {
     if (arguments.length === 1) {
       return app.get(setting)
+    }
+
+    if (setting === 'views') {
+      console.log('>>>>>> WARNING <<<<<< fastify-normalize-request-reply - Does not support the Express "set(\'views\')", try to use the fastify point-of-view middleware to setup templates for: ' + val)
     }
 
     // set value
@@ -45,7 +41,7 @@ const createApp = (opts) => {
     case 'trust proxy':
       app.set('trust proxy fn', compileTrust(val))
 
-      // // trust proxy inherit back-compat
+      // trust proxy inherit back-compat
       Object.defineProperty(app.settings, trustProxyDefaultSymbol, {
         configurable : true,
         value : false
@@ -62,86 +58,8 @@ const createApp = (opts) => {
   }
 
   app.engine = function engine(ext, fn) {
-    if (typeof fn !== 'function') {
-      throw new Error('callback function required')
-    }
-
-    // get file extension
-    var extension = ext[0] !== '.'
-      ? '.' + ext
-      : ext
-
-    // store engine
-    app.engines[extension] = fn
-    app.set('view engine', extension)
-    app.set('view', fn)
-
+    console.log('>>>>>> WARNING <<<<<< fastify-normalize-request-reply - Does not support the Express "engine(\'ext\', fn)", try to use the fastify point-of-view middleware to setup the engine for: ' + ext)
     return app
-  }
-
-  app.render = function render(name, options, callback) {
-    const cache = app.cache
-    const engines = app.engines
-    const renderOptions = {}
-    let done = callback
-    let opts = options
-    let view
-
-    // support callback function as second arg
-    if (typeof options === 'function') {
-      done = options
-      opts = {}
-    }
-
-    // merge app.locals
-    merge(renderOptions, app.locals)
-
-    // merge options._locals
-    if (opts._locals) {
-      merge(renderOptions, opts._locals)
-    }
-
-    // merge options
-    merge(renderOptions, opts)
-
-    // set .cache unless explicitly provided
-    if (renderOptions.cache == null) {
-      renderOptions.cache = app.enabled('view cache')
-    }
-
-    // primed cache
-    if (renderOptions.cache) {
-      view = cache[name]
-    }
-
-    // view
-    if (!view) {
-      var View = app.get('view');
-
-      view = new View(name, {
-        defaultEngine: app.get('view engine'),
-        root: app.get('views'),
-        engines: engines
-      });
-
-// if (!view.path) {
-// var dirs = Array.isArray(view.root) && view.root.length > 1
-// ? 'directories "' + view.root.slice(0, -1).join('", "') + '" or "' +
-// view.root[view.root.length - 1] + '"'
-// : 'directory "' + view.root + '"'
-// var err = new Error('Failed to lookup view "' + name + '" in views ' + dirs);
-// err.view = view;
-// return done(err);
-// }
-
-      // prime the cache
-      if (renderOptions.cache) {
-        cache[name] = view;
-      }
-    }
-
-    // render
-    tryRender(view, renderOptions, done)
   }
 
   const env = process.env.NODE_ENV || 'development'

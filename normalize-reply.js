@@ -973,29 +973,8 @@ const normalizeReply = (res, req, app) => {
    */
 
   res.render = res.render || function render(view, options, callback) {
-    // var app = res.req.app;
-    var done = callback;
-    var opts = options || {};
-    // var req = res.req;
-    var self = res;
-
-    // support callback function as second arg
-    if (typeof options === 'function') {
-      done = options;
-      opts = {};
-    }
-
-    // merge res.locals
-    opts._locals = self.locals;
-
-    // default callback to respond
-    done = done || function(err, str) {
-      if (err) return req.next(err);
-      self.send(str);
-    };
-
     // render
-    app.render(view, opts, done);
+    app.render(view, options, callback);
   };
 
   // pipe the send file stream

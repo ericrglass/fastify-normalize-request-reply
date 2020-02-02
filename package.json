@@ -1,6 +1,6 @@
 {
     "name": "fastify-normalize-request-reply",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "A Fastify plugin to normalize the request and reply to Express request and response",
     "main": "index.js",
     "scripts": {
@@ -27,6 +27,8 @@
         "cookie-parser": "~1.4.3",
         "coveralls": "^3.0.3",
         "fastify": "^2.2.0",
+        "nunjucks": "^3.2.0",
+        "point-of-view": "^3.7.1",
         "tap": "^12.6.1"
     },
     "dependencies": {
