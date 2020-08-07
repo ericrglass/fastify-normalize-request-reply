@@ -1,6 +1,6 @@
 {
     "name": "fastify-normalize-request-reply",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "description": "A Fastify plugin to normalize the request and reply to Express request and response",
     "main": "index.js",
     "scripts": {
@@ -24,11 +24,11 @@
         "normalize"
     ],
     "devDependencies": {
-        "cookie-parser": "~1.4.3",
-        "coveralls": "^3.0.3",
-        "fastify": "^2.2.0",
-        "nunjucks": "^3.2.0",
-        "point-of-view": "^3.7.1",
+        "cookie-parser": "^1.4.5",
+        "coveralls": "^3.1.0",
+        "fastify": "^3.2.0",
+        "nunjucks": "^3.2.2",
+        "point-of-view": "^3.8.0",
         "tap": "^12.6.1"
     },
     "dependencies": {
@@ -40,11 +40,11 @@
         "encodeurl": "~1.0.2",
         "escape-html": "~1.0.3",
         "etag": "~1.8.1",
-        "fastify-plugin": "^1.3.0",
+        "fastify-plugin": "^2.2.0",
         "fresh": "0.5.2",
         "on-finished": "~2.3.0",
         "parseurl": "~1.3.2",
-        "proxy-addr": "~2.0.4",
+        "proxy-addr": "^2.0.6",
         "qs": "6.5.2",
         "range-parser": "~1.2.0",
         "safe-buffer": "5.1.2",

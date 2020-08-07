@@ -10,7 +10,7 @@ This middleware does not support Express middleware that goes beyond simple requ
 
 ## Description
 
-A plugin for [Fastify](https://www.fastify.io/) version 2.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware with interaction with the request and response that was originally written for Express to be be utilized within Fastify.
+A plugin for [Fastify](https://www.fastify.io/) version 3.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware with interaction with the request and response that was originally written for Express to be be utilized within Fastify.
 
 ## Install
 
