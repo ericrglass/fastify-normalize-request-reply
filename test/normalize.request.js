@@ -11,7 +11,8 @@ test('Succesful get request with Request normalized', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(req.fastifyNormalized, true)
@@ -74,7 +75,8 @@ test('Request normalized already', (t) => {
     next()
   })
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.get('/', (req, reply) => {
     reply.send({ hello: 'world' })
@@ -130,7 +132,8 @@ test('Request with functionality already', (t) => {
     next()
   })
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.get('/', (req, reply) => {
     reply.send({ hello: 'world' })
@@ -155,7 +158,8 @@ test('Request header(name) or get(name)', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     try {
@@ -195,7 +199,8 @@ test('Request range(size, options)', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(JSON.stringify(req.range(120)), '[{"start":0,"end":50},{"start":51,"end":100}]', 'should return parsed ranges')
@@ -228,7 +233,8 @@ test('Request no range(size, options)', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(req.range(120), undefined, 'should return undefined if no range')
@@ -258,7 +264,8 @@ test('Request param(name, defaultValue)', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.params = {hello: 'world'}
@@ -293,7 +300,8 @@ test('Request param(name, defaultValue) with no req.params', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.params = null
@@ -324,7 +332,8 @@ test('Request is(types)', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(req.is('html'), false, 'should return false when not matching')
@@ -359,7 +368,8 @@ test('Request is(types) with an array', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(req.is(['application', 'json']), 'json')
@@ -393,7 +403,8 @@ test('Request protocol', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.app.set('trust proxy fn', () => { return true })
@@ -428,7 +439,8 @@ test('Request protocol with https', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.app.set('trust proxy fn', () => { return true })
@@ -465,7 +477,8 @@ test('Request protocol with https and http', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.app.set('trust proxy fn', () => { return true })
@@ -500,7 +513,8 @@ test('Request subdomains', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.headers.host = null
@@ -532,7 +546,8 @@ test('Request subdomains should work with IPv4 address', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     t.is(JSON.stringify(req.subdomains), JSON.stringify([]))
@@ -559,7 +574,8 @@ test('Request trusthostname', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.app.set('trust proxy', true)
@@ -595,7 +611,8 @@ test('Request trusthostname with brackets', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     req.app.set('trust proxy', true)
@@ -626,7 +643,8 @@ test('Request fresh', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     res.set('ETag', '"123"')
@@ -661,7 +679,8 @@ test('Request fresh no response headers', (t) => {
   const app = Fastify()
   t.tearDown(() => app.close())
 
-  app.register(plugin)
+  await app.register(require('middie'))
+  app.use(plugin)
 
   app.use((req, res, next) => {
     res.headers = null
