@@ -6,11 +6,15 @@
 
 ## NOTE
 
-This middleware does not support Express middleware that goes beyond simple request and response interaction. If the Express middleware has a UI with a template engine view; utilizes the Express routers; or starts its own instance of Express, then it is not supported.
+This plugin will not be updated for version Fastify 3.x, because of the internal changes that where made for how middleware is implemented in Fastify now.
+
+## NOTE
+
+This plugin does not support Express middleware that goes beyond simple request and response interaction. If the Express middleware has a UI with a template engine view; utilizes the Express routers; or starts its own instance of Express, then it is not supported.
 
 ## Description
 
-A plugin for [Fastify](https://www.fastify.io/) version 3.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware with interaction with the request and response that was originally written for Express to be be utilized within Fastify.
+A plugin for [Fastify](https://www.fastify.io/) version 2.x that utilizes the [Hook onRequest with addHook](https://github.com/fastify/fastify/blob/master/docs/Hooks.md) to normalize the Fastify request and reply to the [Express](https://expressjs.com/) version 4.x request and response. This allows middleware with interaction with the request and response that was originally written for Express to be be utilized within Fastify.
 
 ## Install
 
